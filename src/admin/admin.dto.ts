@@ -3,12 +3,12 @@ import { IsEmail, IsInt, IsString } from "class-validator";
 export class AdminDTO{
     @IsString()
     name:string;
-    @IsInt()
-    id:number;
+    password:number;
     @IsString()
     @IsEmail()
     email:string;
     address:string;
+    filename:string;
 }
 
 export class AdminUpdateDTO{

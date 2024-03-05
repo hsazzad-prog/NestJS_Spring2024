@@ -3,6 +3,8 @@ import { AdminService } from "./admin.service";
 import { AdminDTO } from "./admin.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { MulterError, diskStorage } from "multer";
+import { ManagerEntity } from "src/manager/manager.entity";
+import { AdminEntity } from "./admin.entity";
 
 
 
@@ -24,7 +26,7 @@ export class AdminController{
         return this.adminService.getUsersByNameAndId(name, id);
     }
 
-    @Post('adduser')
+    @Post('addadmin')
     @UseInterceptors(FileInterceptor('myfile',
 { fileFilter: (req, file, cb) => {
   if (file.originalname.match(/^.*\.(jpg|webp|png|jpeg)$/))
@@ -44,13 +46,23 @@ export class AdminController{
 ))
     @UsePipes(new ValidationPipe)
     async addUser(@Body() myobj: AdminDTO,  @UploadedFile()  myfile: Express.Multer.File): Promise<AdminDTO>{
-        console.log(myobj.name);
-        return this.adminService.addUser(myobj);
+       myobj.filename = myfile.filename;
+        return this.adminService.addAdmin(myobj);
     }
 
     @Get('/getimage/:name')
     getImages(@Param('name') name:string, @Res() res) {
     res.sendFile(name,{ root: './upload' })
     }
+    @Post('addmanager/:adminid')
+    async addManager(@Param('adminid') adminid:string, @Body() myobj: ManagerEntity, ): Promise<ManagerEntity>{
+
+         return this.adminService.addManager(adminid,myobj);
+     }
+     @Get('/getadmin')
+     getAllAdmin() : Promise<AdminEntity[]> {
+     return this.adminService.getAllAdmins();
+     }
+
    
 }
