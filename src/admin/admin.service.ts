@@ -1,9 +1,11 @@
-import { Injectable } from "@nestjs/common";
-import { AdminDTO } from "./admin.dto";
+import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { AdminDTO, loginDTO } from "./admin.dto";
 import { InjectRepository } from "@nestjs/typeorm";
 import {  Repository } from "typeorm";
 import { ManagerEntity } from "src/manager/manager.entity";
 import { AdminEntity } from "./admin.entity";
+import { JwtService } from '@nestjs/jwt';
+import { emit } from "process";
 
 
 @Injectable()
@@ -11,7 +13,9 @@ export class AdminService {
     constructor(@InjectRepository(AdminEntity)
   private adminRepo: Repository<AdminEntity>,
   @InjectRepository(ManagerEntity)
-  private managerRepo: Repository<ManagerEntity>
+  private managerRepo: Repository<ManagerEntity>,
+  private jwtService: JwtService
+
   ) { }
     getUsers(): object {
         return { message: "hellow Admin" }
@@ -26,7 +30,7 @@ export class AdminService {
         };
 
     }
-    async addAdmin(myobj: AdminDTO): Promise<AdminDTO> {
+    async addAdmin(myobj: AdminEntity): Promise<AdminEntity> {
         return await this.adminRepo.save(myobj);
     }
     async getAllAdmins(): Promise<AdminEntity[]> {
@@ -40,7 +44,9 @@ export class AdminService {
          manager.admin = admin;
         return this.managerRepo.save(manager);
     }
-
+    async findOne( logindata:loginDTO): Promise<any> {
+        return await this.adminRepo.findOneBy({email:logindata.email});
+      }
 
 
 }

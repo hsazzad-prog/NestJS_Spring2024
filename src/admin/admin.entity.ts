@@ -10,7 +10,8 @@ export class AdminEntity{
   
     @Column({ type: 'varchar', length: 100, unique: true })
     email: string;
-  
+    @Column({ type: 'varchar' })
+    password: string;
     @Column({name:'fulName', type: 'varchar', length: 150 })
     name: string;
     @Column()

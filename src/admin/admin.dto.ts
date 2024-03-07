@@ -1,16 +1,24 @@
-import { IsEmail, IsInt, IsString } from "class-validator";
+import { Optional } from "@nestjs/common";
+import { IsEmail, IsInt, IsNotEmpty, IsString } from "class-validator";
 
 export class AdminDTO{
-    @IsString()
-    name:string;
-    password:number;
-    @IsString()
-    @IsEmail()
-    email:string;
-    address:string;
-    filename:string;
+   
+    email: string;
+    password: string;
+
+    name: string;
+
+    address: string;
+
+    filename: string;
+
+    @Optional()
+    adminId: string;
+    @Optional()
+    managers: any;
 }
 
-export class AdminUpdateDTO{
-    
+export class loginDTO{
+    @IsEmail() email: string;
+    @IsNotEmpty() password: string;    
 }

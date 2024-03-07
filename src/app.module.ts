@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AdminModule } from './admin/admin.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './admin/auth/auth.module';
 
 
 @Module({
@@ -13,7 +14,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
      database: 'secb',//Change to your database name
      autoLoadEntities: true,
      synchronize: true,
-     } ),],
+     } ), AuthModule,],
   controllers: [],
   providers: [],
 })
