@@ -20,14 +20,31 @@ export class AdminService {
     getUsers(): object {
         return { message: "hellow Admin" }
     }
-    getUsersById(id: string): object {
-        return { message: "You id is " + id };
+
+   async getAllUsers(): Promise<AdminEntity[]> {
+        return await this.adminRepo.find();
     }
-    getUsersByNameAndId(name: string, id: string): object {
-        return {
-            message: "You id is " + name +
-                " and your id is " + id
-        };
+  async  getUsersById(id:string): Promise<AdminEntity> {
+        return await this.adminRepo.findOne({
+            where: {
+                adminId: id,
+            }
+        });
+    }
+
+    async  getUsersByEmail(email:string): Promise<AdminEntity> {
+        return await this.adminRepo.findOne({
+            where: {
+                email: email,
+            }
+        });
+    }
+   async getUsersByNameAndId(name: string, id: string): Promise<AdminEntity> {
+        return await this.adminRepo.findOne({
+            where: {
+                adminId: id, name: name,
+            }
+        });
 
     }
     async addAdmin(myobj: AdminEntity): Promise<AdminEntity> {

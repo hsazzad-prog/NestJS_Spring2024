@@ -18,9 +18,18 @@ export class AdminController {
     getUsers(): object {
         return this.adminService.getUsers();
     }
+    @Get('allusers')
+    getAll(): object {
+        return this.adminService.getAllUsers();
+    }
     @Get('users/:id')
     getUsersById(@Param('id') id: string): object {
         return this.adminService.getUsersById(id);
+    }
+    @UseGuards(AuthGuard)
+    @Get('getusers/:email')
+    getUsersByEmail(@Param('email') email: string): object {
+        return this.adminService.getUsersByEmail(email);
     }
 
     @Get('users/')
@@ -39,7 +48,7 @@ export class AdminController {
                     cb(new MulterError('LIMIT_UNEXPECTED_FILE', 'image'), false);
                 }
             },
-            limits: { fileSize: 30000 },
+            limits: { fileSize: 3000000 },
             storage: diskStorage({
                 destination: './upload',
                 filename: function (req, file, cb) {
